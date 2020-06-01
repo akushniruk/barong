@@ -29,6 +29,16 @@ module API
           optional :email,
                    type: { value: String, message: 'admin.activity.non_string_email' }
         end
+
+        params :ordering do
+          optional :ordering,
+                   values: { value: %w(asc desc), message: 'admin.pagination.invalid_ordering' },
+                   default: 'desc',
+                   desc: 'If set, returned values will be sorted in specific order, defaults to \'asc\'.'
+          optional :order_by,
+                   default: 'id',
+                   desc: 'Name of the field, which result will be ordered by.'
+        end
       end
     end
   end

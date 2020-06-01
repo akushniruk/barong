@@ -49,12 +49,14 @@ module API
                      type: String,
                      values: { value: -> (p){ %w[created updated].include?(p) }, message: 'admin.user.invalid_range' },
                      default: 'created'
+            use :ordering
             use :timeperiod_filters
             use :pagination_filters
           end
           get do
             entity = params[:extended] ? API::V2::Entities::UserWithProfile : API::V2::Entities::User
             users = API::V2::Queries::UserFilter.new(User.all).call(params).uniq
+            # users = user.order(params{:order_by} => params[:ordering])
             users.tap { |q| present paginate(q), with: entity }
           end
 
